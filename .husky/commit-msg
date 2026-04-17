@@ -1,0 +1,11 @@
+#!/bin/sh
+# Conventional commits validation (flexible: Feat/feat both valid)
+commit_msg=$(cat "$1")
+pattern="^(feat|fix|docs|style|refactor|test|chore|Feat|Fix|Docs|Style|Refactor|Test|Chore)(\(.+\))?: .+"
+
+if ! echo "$commit_msg" | grep -qE "$pattern"; then
+  echo "❌ Commit message must follow conventional commits format"
+  echo "   Examples: feat: add new feature"
+  echo "             Fix: resolve bug"
+  exit 1
+fi

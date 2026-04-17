@@ -1,0 +1,16 @@
+{
+  "name": "maria-saas",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MarIA SaaS - Fullstack Application",
+  "scripts": {
+    "prepare": "husky",
+    "dev:back": "cd back && npm run dev",
+    "dev:front": "cd front && npm run dev",
+    "test:back": "cd back && npm test",
+    "test:front": "cd front && npm test"
+  },
+  "devDependencies": {
+    "husky": "^9.0.11"
+  }
+}

@@ -1,0 +1,28 @@
+# Claude
+.claude/
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment
+.env
+**/.env
+
+# Backend
+back/database.sqlite
+back/contracts/
+back/.husky/
+
+# Frontend build
+front/dist/
+front/.vite/
+front/.husky/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,25 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "MarIA SaaS - Backend",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest tests/",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "joi": "^17.12.3",
+    "nodemailer": "^6.9.13",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "husky": "^9.0.11",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.0"
+  }
+}
