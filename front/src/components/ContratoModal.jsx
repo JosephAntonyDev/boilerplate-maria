@@ -9,9 +9,6 @@ const initialForm = {
   fecha_reserva: '',
 };
 
-// TODO: Bug #3 - Inline validation doesn't work correctly
-// The errors state is declared but validation runs only on submit, not on field change
-// Fix: add onChange validation per field or use a proper validation library
 function ContratoModal({ onClose, onSuccess }) {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
@@ -60,8 +57,6 @@ function ContratoModal({ onClose, onSuccess }) {
     e.preventDefault();
     const newErrors = validate();
 
-    // TODO: Bug #3 - Even when errors exist, the form tries to submit anyway
-    // because the condition below is inverted
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -73,8 +68,6 @@ function ContratoModal({ onClose, onSuccess }) {
     try {
       const { data } = await contratosApi.create(form);
       onSuccess(data);
-      // TODO: Bug #1 - Modal doesn't close after successful submit
-      // Fix: uncomment the line below
       onClose();
     } catch (err) {
       console.error('Error creating contrato:', err);

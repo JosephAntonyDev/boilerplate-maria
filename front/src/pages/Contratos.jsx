@@ -9,13 +9,19 @@ const statusColors = {
   Cancelado: 'bg-red-100 text-red-700',
 };
 
-// TODO: Bug #2 - Table is not responsive on screens < 768px
-// Fix: wrap table in a div with overflow-x-auto and add min-width to table
 function Contratos() {
   const [contratos, setContratos] = useState([]);
   const [pagination, setPagination] = useState({ page: 1, totalPages: 1, total: 0 });
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [toast, setToast] = useState({ show: false, message: '' });
+
+  const showNotification = (message) => {
+    setToast({ show: true, message });
+    setTimeout(() => {
+      setToast({ show: false, message: '' });
+    }, 3000);
+  };
 
   async function fetchContratos(page = 1) {
     setLoading(true);
@@ -38,7 +44,10 @@ function Contratos() {
     try {
       if (action === 'cancelar') await contratosApi.cancelar(id);
       if (action === 'firmar') await contratosApi.firmar(id);
-      if (action === 'reenviar') await contratosApi.reenviar(id);
+      if (action === 'reenviar') {
+        await contratosApi.reenviar(id);
+        showNotification('Email reenviado exitosamente');
+      }
       if (action === 'editar') {
         // TODO: implement edit modal
         alert(`Editar contrato #${id} - funcionalidad pendiente`);
@@ -52,6 +61,7 @@ function Contratos() {
 
   function handleNewContrato(newContrato) {
     setContratos((prev) => [newContrato, ...prev]);
+    showNotification('Contrato creado y email enviado exitosamente');
   }
 
   return (
@@ -67,7 +77,6 @@ function Contratos() {
       </div>
 
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        {/* TODO: Bug #2 - missing overflow-x-auto wrapper for mobile responsiveness */}
         <div className="overflow-x-auto">
         <table className="w-full text-sm min-w-[800px]">
           <thead className="bg-gray-50">
@@ -145,6 +154,17 @@ function Contratos() {
           onClose={() => setShowModal(false)}
           onSuccess={handleNewContrato}
         />
+      )}
+
+      {toast.show && (
+        <div className="fixed bottom-4 right-4 z-50 animate-fade-in-up">
+          <div className="bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3">
+            <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            <span className="font-medium text-sm">{toast.message}</span>
+          </div>
+        </div>
       )}
     </div>
   );
