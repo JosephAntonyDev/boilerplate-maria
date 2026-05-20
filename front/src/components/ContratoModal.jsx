@@ -20,21 +20,39 @@ function ContratoModal({ onClose, onSuccess }) {
   function handleChange(e) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    // TODO: Bug #3 - validation should clear/set error here on each keystroke
-    // Currently errors only reset on submit, giving misleading UX
+    
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: null }));
+    }
   }
 
   function validate() {
     const newErrors = {};
+    
     if (!form.nombre.trim()) newErrors.nombre = 'El nombre es obligatorio';
     if (!form.apellidos.trim()) newErrors.apellidos = 'Los apellidos son obligatorios';
-    if (!form.telefono.trim()) newErrors.telefono = 'El teléfono es obligatorio';
+    
+    if (!form.telefono.trim()) {
+      newErrors.telefono = 'El teléfono es obligatorio';
+    } else if (!/^\d+$/.test(form.telefono.trim())) {
+      newErrors.telefono = 'El teléfono solo debe contener números';
+    }
+
     if (!form.email.trim()) {
       newErrors.email = 'El email es obligatorio';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       newErrors.email = 'El email no es válido';
     }
-    if (!form.fecha_reserva) newErrors.fecha_reserva = 'La fecha de reserva es obligatoria';
+    
+    if (!form.fecha_reserva) {
+      newErrors.fecha_reserva = 'La fecha de reserva es obligatoria';
+    } else {
+      const today = new Date().toISOString().split('T')[0];
+      if (form.fecha_reserva < today) {
+        newErrors.fecha_reserva = 'La fecha no puede ser en el pasado';
+      }
+    }
+    
     return newErrors;
   }
 
@@ -44,7 +62,7 @@ function ContratoModal({ onClose, onSuccess }) {
 
     // TODO: Bug #3 - Even when errors exist, the form tries to submit anyway
     // because the condition below is inverted
-    if (Object.keys(newErrors).length === 0) {
+    if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
@@ -57,7 +75,7 @@ function ContratoModal({ onClose, onSuccess }) {
       onSuccess(data);
       // TODO: Bug #1 - Modal doesn't close after successful submit
       // Fix: uncomment the line below
-      // onClose();
+      onClose();
     } catch (err) {
       console.error('Error creating contrato:', err);
       setErrors({ submit: err.response?.data?.error || 'Error al crear el contrato' });
@@ -67,10 +85,10 @@ function ContratoModal({ onClose, onSuccess }) {
   }
 
   const fields = [
-    { name: 'nombre', label: 'Nombre', type: 'text' },
-    { name: 'apellidos', label: 'Apellidos', type: 'text' },
-    { name: 'telefono', label: 'Teléfono', type: 'tel' },
-    { name: 'email', label: 'Email', type: 'email' },
+    { name: 'nombre', label: 'Nombre', type: 'text', placeholder: 'Ej. Jose' },
+    { name: 'apellidos', label: 'Apellidos', type: 'text', placeholder: 'Ej. Pinto' },
+    { name: 'telefono', label: 'Teléfono', type: 'tel', placeholder: 'Ej. 123-456-7890' },
+    { name: 'email', label: 'Email', type: 'email', placeholder: 'Ej. jose.pinto@example.com' },
     { name: 'fecha_reserva', label: 'Fecha de Reserva', type: 'date' },
   ];
 
@@ -91,6 +109,8 @@ function ContratoModal({ onClose, onSuccess }) {
                 name={field.name}
                 value={form[field.name]}
                 onChange={handleChange}
+                placeholder={field.placeholder}
+                min={field.type === 'date' ? new Date().toISOString().split('T')[0] : undefined}
                 className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   errors[field.name] ? 'border-red-400' : 'border-gray-300'
                 }`}
