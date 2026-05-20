@@ -2,6 +2,13 @@
 
 Sistema SaaS de hospitality con gestión de contratos, reservas y tickets.
 
+## Despliegues (Live Demo)
+Para facilitar la revisión, ambos proyectos fueron desplegados:
+- **Frontend (App):** [https://maria-saas.vercel.app/](https://maria-saas.vercel.app/)
+- **Backend (API):** [https://maria-saas-api.onrender.com/](https://maria-saas-api.onrender.com/)
+
+---
+
 ## Estructura
 
 ```
