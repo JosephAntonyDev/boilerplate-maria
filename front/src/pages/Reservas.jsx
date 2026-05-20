@@ -17,9 +17,10 @@ function Reservas() {
     <div>
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Reservas</h2>
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50">
-            <tr>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[700px]">
+            <thead className="bg-gray-50">
+              <tr>
               {['ID', 'Huésped', 'Habitación', 'Entrada', 'Salida', 'Status'].map((h) => (
                 <th key={h} className="text-left px-4 py-3 text-gray-500 font-medium">{h}</th>
               ))}
@@ -42,6 +43,7 @@ function Reservas() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );
