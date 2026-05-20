@@ -23,9 +23,10 @@ function Tickets() {
     <div>
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Tickets</h2>
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50">
-            <tr>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[700px]">
+            <thead className="bg-gray-50">
+              <tr>
               {['ID', 'Título', 'Habitación', 'Prioridad', 'Asignado', 'Status'].map((h) => (
                 <th key={h} className="text-left px-4 py-3 text-gray-500 font-medium">{h}</th>
               ))}
@@ -52,6 +53,7 @@ function Tickets() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );
